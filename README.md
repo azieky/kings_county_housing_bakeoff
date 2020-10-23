@@ -5,57 +5,98 @@ For the Kings County Housing Bake-off, we were tasked with the goal to predict h
   
 - **Exploratory Data Analysis (EDA):** 
 
-The start, I began performing EDA (Exploratory Data Analysis). I first want to look at the statistical features of our target variable “Price”. 
+To start, I began performing EDA (Exploratory Data Analysis). I first want to look at the statistical features of our target variable “Price”. A simple distplot, which is a histogram with a line to help show distribution showed that our price data was positively skewed, which is evidence we could be dealing with upper range outliers, or large than usual house prices. I calculated the inter-quartile upper range and the inter-quartile extreme upper range (10xIQR). The values outside 10 times the interquartile range I convert to the inter-quartile upper range. 
+
 ![alt text](Price_vs_Frequency.png)
 
+Also, a “log_price” variable could also work better in our model because it is more normally distributed. 
+
+![alt text](Log_Price_vs_Frequency.png)
+
+Next I started to look at the independent variables starting with “sqft_living”. I checked for more extreme values but decided against converting the values because they were authentic values. 
+
+![alt text]("Price_vs_Sqft_living.png")
+
+Then I wanted to get an idea of Multicollinearity in our dataset, so I used a Pearson Correlation Matrix. This was a useful visualization that made it easy to check multicollinearity as my dataset evolved. Something that stood out right away was the correlation between all of the sqft columns (sqft_living, sqft_lot, sqft_lot15, sqft_above, sqft_basement, sqft_living15). I used a VIF calculated and a Pair plot visualization to further investigate. 
+
+![alt text]("pearson_co_map.png")
+
+I decided that it would be sufficient to use sqft_living as my variable, convert sqft_basement into a binary (Basement and No Basement) column, and disregard the rest. 
+
+![alt text]("pairplot.png")
+
+Next I just went through some more basic EDA to get a better understanding of the data. Using a Boxplot, I was able better see the Number of Bedrooms effect on Price. I was able to get more significant result by binning bedrooms into 4 groups. Also, there were two outliers of 11 and 33 bedrooms, which I converted to the mean. 
+
+![alt text]("beds_vs_price.png")
+
+I then when went on to visualize Waterfront vs Price in two boxplots, which showed house with waterfront seem to be more expensive. And Basement vs Price the same way, which showed not much of a different between the mean price of houses with and without basements. 
+
+![alt text]("water_bsement.png")
+
+Similarly, I used a boxplot to visualize Condition, which values ranged from 1 to 5. The boxplots showed a not very significant change in mean prices between house condition. Leading me to believe it is not a significant variable
+
+![alt text]("condition.png")
+
+Next I went on to Grade vs Price which is valued on a range to 13. The boxplot showed not a great deal of change in the early values but a significant change as the grade gets better. This being the case, I decided to bin the House Grades into 3 bin, 1 to 9 “Low Grade”, 10 and 11 “High Grade”, and 12 and 13 “High Grade”. I used an OLS model to check to see how my R-Squared and P-Values were affected by these changes. 
+
+![alt text]("Grade_vs_Price.png")
 
 
 
-- **Feature Engineering:** You must create **at least 3 new features** to test in your model. Those features do not have to make it into your final model, as they might be removed during the feature selection process. That is expected, but you still need to explain the features you engineer and your thought process behind why you thought they would explain the selling price of the house.  
+- **Feature Engineering:**  
 
-- **Statistical Tests:** Your notebook must show **at least 3 statistical tests** that you preformed on your data set. Think of these as being part of your EDA process; for example, if you think houses with a view cost more than those without a view, then perform a two-sample T-test. These can be preliminary evidence that a feature will be important in your model.  
+I then began with Feature Engineering. First, I feature engineered a Bath per Bedroom value. I plotted Bath_per_Bed vs Price and did not come to any visual conclusion. After a new featured was engineered I would use the correlation matrix, a VIF calculator, and an OLS to see how the new variable effects the data.
 
-- **Feature Selection:** There are many ways to do feature selection: filter methods, P-values, or recursive feature elimination (RFE). You should try multiple different techniques and combinations of them. For your final model, you will **settle on a process of feature selection**; this process should be **clearly shown in your final notebook**.
+![alt text]("bath_per_bed.png")
 
-- **Model Interpretation:** One of the benefits of a linear regression model is that you can **interpret the coefficients** of the model **to derive insights**. For example, which feature has the biggest impact on the price of the house? Was there a feature that you thought would be significant but was not? Think if you were a real estate agent helping clients price their house: what information would you find most helpful from this model?
+I also decided to make some of my variable’s binary. Liked mentions earlier, I changed the sqft_basement feature to show if the house has a basement or not. I did a similar conversion to the ‘floors’ feature. Our model was not responding well to that feature, so I decided to make it into a “One Story House” or “Multi Story House”.  Similarly, I made the condition feature “Bad Condition” and “Good Condition”. 
 
-## GitHub Repository
+Another successful way to feature engineer was through binning. For the features “Grade”, “Zip Code Price Level”, and “Years Old” instead of having a lot of unique discrete variables for each feature. 
 
-A GitHub repo is a good way to keep track of your work, but also to display the work you did to future employers. Your GitHub should contain the following:
+I also used the Date Sold column to engineer a column that shows the season the house was sold. Which did not come out very valuable. 
 
-- A `README.md` that briefly describes the project and the files within the repo.
-- Your cleaned and annotated notebook showing your work.
-- A folder with all of your 'working' notebooks where you played around with your data and the modeling process.
 
-## Data Set Information
+- **Statistical Tests:** 
+The first statistical test I used was a Two Sample T-Test, to text the mean prices of the Year a house sold. We only had two unique values for year sold (2014, 2015) so a Two Sample T-Test was perfect. 
 
-This data set contains information about houses that were sold in the Seattle area during the last decade. Below is a description of the column names, to help you understand what the data represents. As with most real world data sets, the column names are not perfectly described, so you'll have to do some research or use your best judgment if you have questions relating to what the data means. 
+   Our Null Hypothesis is that the mean prices of houses sold in 2014 and 2014 are the same 
 
-Like every data set, there are some irregularities and quirks. Trust me, there wasn't a house sold with 33 bedrooms, even though the data says there was. *You have to decide how you want to handle that example*. Also, some houses were sold more than once within the time frame of this dataset. Think about how that can be useful information in predicting the selling price.
+   Our Alternative Hypothesis was that they are different
+  
 
-As you go through this modeling process, think about what determines how much someone will pay for a house.  For example, the larger the house is, the more people will pay for it. If you understand why certain houses cost more than others and represent that in your model, it will be a more accurate model.  
+   With a t-statistic of 0.307 and a p-value of .759 we can accept the Null hypothesis. Proving the year does not make a   significant different in the mean house prices. 
+     ![alt text]("tt.png")
+     
+     
+Next I went on to an Anova test. Here I tried to determine if the season the house was sold matter in the price. 
 
-Have fun!
+   My Null Hypothesis is that the season does not affect the price 
 
-# Column Names and descriptions for Kings County Data Set
-* **id** - unique ID for a house
-* **date** - Date day house was sold
-* **price** - Price is prediction target
-* **bedrooms** - Number of bedrooms
-* **bathrooms** - Number of bathrooms
-* **sqft_living** - square footage of the home
-* **sqft_lot** - square footage of the lot
-* **floors** - Total floors (levels) in house
-* **waterfront** - Whether house has a view to a waterfront
-* **view** - Number of times house has been viewed
-* **condition** - How good the condition is (overall)
-* **grade** - overall grade given to the housing unit, based on King County grading system
-* **sqft_above** - square footage of house (apart from basement)
-* **sqft_basement** - square footage of the basement
-* **yr_built** - Year when house was built
-* **yr_renovated** - Year when house was renovated
-* **zipcode** - zip code in which house is located
-* **lat** - Latitude coordinate
-* **long** - Longitude coordinate
-* **sqft_living15** - The square footage of interior housing living space for the nearest 15 neighbors
-* **sqft_lot15** - The square footage of the land lots of the nearest 15 neighbors
+   My Alternative Hypothesis is that season does have an effect on price
+
+   With a f-statistic of 6.882 and a P-value of 0.000125 we reject the null hypothesis proving that the season sold does make a difference. 
+![alt text]("anova1.png")
+
+Last I did another Anova test to see if the Binned Zip code based on housing prices has an effect on the Sqft of the House.
+
+My Null Hypothesis is that the zip code has no effect on the size of the house.
+
+My Alternative Hypothesis is that the zip code does have an effect on the size of the house.
+
+With a f-statistic of 523.56 and a p-value of 0.0 we can reject the null hypothesis. Leading us to believe that there is a statistical different inhouse size by zip code 
+
+![alt text]("anova2.png")     
+     
+ 
+ **Feature Selection:** 
+ I used a lot of different methods for Feature Selection. To start I was able to code a VIF factor with help me decide with variable were having negative effect on the model. I also used the Person Correlation Matrix to help see if my features were multicollinear. Then I would use a simple OLS Multiple Linear model to help see which features are helping and hurting our predictions; based on p-values, r-squared value, t-value, etc. After I was fine with those tests, I would move into Sklearn linear modeling to further test my data. I used the Polynomial Features function to transform my dataset. I also used Recursive Feature Elimination to further examine my data. And KBest to get my most useful features 
+
+
+
+- **Model Interpretation:** 
+After going through each different process, I would check to see the R-Squared, Training Root Mean Square Error, Test Root Mean Squared Error. I would also check my Residual Plot help visually see where my model errors lie. 
+
+![alt text]("residual.png") 
+
+In the end I decided to use a Polynomial 2-degree dataset and ran a Select Kbest function to get a list of my 20 most useful features when predicting price. While the R-squared value was .74, determining that 74% of my model variance can be explained. And my Training RMSE was $173,615 and Test RMSE $185,258. I still was unable to perform confidently on the Holdout Data which is concerning. I will need to go back a troubleshoot to see where my error lie. 
+
