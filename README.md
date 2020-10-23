@@ -19,7 +19,7 @@ Next I started to look at the independent variables starting with “sqft_living
 
 Then I wanted to get an idea of Multicollinearity in our dataset, so I used a Pearson Correlation Matrix. This was a useful visualization that made it easy to check multicollinearity as my dataset evolved. Something that stood out right away was the correlation between all of the sqft columns (sqft_living, sqft_lot, sqft_lot15, sqft_above, sqft_basement, sqft_living15). I used a VIF calculated and a Pair plot visualization to further investigate. 
 
-![alt text](pearson_co_map.png)
+![alt text](Screen%20Shot%202020-10-23%20at%209.48.10%20AM.png)
 
 I decided that it would be sufficient to use sqft_living as my variable, convert sqft_basement into a binary (Basement and No Basement) column, and disregard the rest. 
 
@@ -65,7 +65,7 @@ The first statistical test I used was a Two Sample T-Test, to text the mean pric
   
 
    With a t-statistic of 0.307 and a p-value of .759 we can accept the Null hypothesis. Proving the year does not make a   significant different in the mean house prices. 
-     ![alt text](tt.png)
+     ![alt text](Data_Visualizations/Screen%20Shot%202020-10-23%20at%209.51.12%20AM.png)
      
      
 Next I went on to an Anova test. Here I tried to determine if the season the house was sold matter in the price. 
