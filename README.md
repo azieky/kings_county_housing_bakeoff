@@ -1,33 +1,15 @@
 # Kings County Housing Bake-off
 
-For many machine learning projects, the goal is to create a model that best predicts the target variable on unseen data. In order to develop a model, we have a general process, but there is a lot of flexibility within this process. Even when working with the same data, people can produce different models by engineering different features, or by selecting certain features to include in the models. **There is no one correct way to create a model**.
+For the Kings County Housing Bake-off, we were tasked with the goal to predict houses prices given a dataset of information. This could be beneficial in a business setting for many reasons. For example, if a customer wanted to buy a house, they could be able to put in some relevant data about the location, square footage, bedroom, etc. And be able to get an estimate of what the house is worth. On the other side if someone is selling a house, they would be able to do put in similar data to see what a fair price would be. It is also good to get this practice because similar modeling processes could be used in many different aspects of business. For example, a business professional could use a similar modeling process to valuate a business, or stock prices. 
 
-For Phase 2, you will be creating a model that will **predict the prices of homes** sold in the Seattle, WA area. For this project there will be **3 deliverables**:
+  
+- **Exploratory Data Analysis (EDA):** 
 
-- a Github repo for this project
-- a notebook showing your final modeling process
-- a CSV file of your predictions on the holdout set
-	- name this file `housing_preds_your_name.csv` (replacing `your_name` with your name) and send via Slack
+The start, I began performing EDA (Exploratory Data Analysis). I first want to look at the statistical features of our target variable “Price”. 
+![alt text](Price_vs_Frequency.png)
 
-## Holdout predictions
 
-You will develop a model using `kc_house_data_train.csv`. Then you will use that model/process to predict on the `kc_house_data_holdout_features.csv`. 
 
-***Important note #1***: If you create a new feature with your training data, you will need to do the same thing with the test data before using the model to predict on the holdout data.  
-
-After using your model to predict the holdout data, you will submit those predictions as a `.csv` file to the instructional staff. We will score the submitted predictions using the RMSE of those predictions.
-
-***Important note #2***: While we will score and rank each submission, your class rank will **not** have any direct impact on passing Phase 2. *The goal is to make sure you can actually produce predictions*.
-
-So as long as you successfully **complete the modeling process** and can **explain the work you did**, you will be able to pass.  
-
-## Final notebook
-
-Through the modeling process, you will try many different techniques (**feature engineering** and **feature selection**, for example) to try and create your best model. Some will work and some will not lead to a better model. Through your modeling process, you will identify what actions create the best model. After you have finalized your process, you must create a 'cleaned up' and annotated notebook that shows your process.
-
-Your notebook must include the following:
-
-- **Exploratory Data Analysis (EDA):** You must create **at least 4 data visualizations** that help to explain the data. These visualizations should help someone unfamiliar with the data understand the target variable and the features that help explain that target variable.
 
 - **Feature Engineering:** You must create **at least 3 new features** to test in your model. Those features do not have to make it into your final model, as they might be removed during the feature selection process. That is expected, but you still need to explain the features you engineer and your thought process behind why you thought they would explain the selling price of the house.  
 
